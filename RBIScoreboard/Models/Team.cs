@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RBIScoreboard.Models
 {
-    class Team : Abstractions.A_INotifyPropertyChanged
+    public class Team : Abstractions.A_INotifyPropertyChanged
     {
 
         public Team()
@@ -20,12 +20,32 @@ namespace RBIScoreboard.Models
                 run.PropertyChanged += Run_Changed;
             }
 
+            for (int i = 0; i< 9; i++)
+            {
+                this.Lineup.Add(new Player()
+                {
+                    Number = Faker.RandomNumber.Next(0,99),
+                    Name = Faker.Name.FullName(Faker.NameFormats.Standard),
+                    Age = Faker.RandomNumber.Next(17, 39)
+                });
+            }
+
             //Calculate number of run on the first launch//
             this.TotalRuns = this.LinescoreRuns.Sum<Stat>(run => run.Value);
-         
+
         }
 
-     
+
+        private ObservableCollection<Player> lineup = new ObservableCollection<Player>();
+
+        public ObservableCollection<Player> Lineup
+        {
+            get { return lineup; }
+            set { lineup = value; }
+        }
+
+
+
         private void Run_Changed(object sender, EventArgs e)
         {
             this.TotalRuns = this.LinescoreRuns.Sum<Stat>(run => run.Value);

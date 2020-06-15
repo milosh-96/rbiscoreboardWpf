@@ -1,0 +1,306 @@
+﻿<Window x:Class="RBIScoreboard.OutputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RBIScoreboard"
+        xmlns:teamcontrols="clr-namespace:RBIScoreboard.Controls.Team"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:RBIScoreboard.ViewModels"
+        Title="Window1" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        ShowInTaskbar="True"
+        StateChanged="Window_StateChanged"
+        >
+    <Window.DataContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary Source="Resources/Style.xaml"></ResourceDictionary>
+        
+    </Window.Resources>
+    <StackPanel Style="{StaticResource OutputWindowContainer}">
+        <StackPanel.Background>
+            <SolidColorBrush Color="#dcdcdc"></SolidColorBrush>
+            
+        </StackPanel.Background>
+        <!--HEADER BAR-->
+        <StackPanel Orientation="Horizontal" x:Name="HeaderGraphics" Style="{StaticResource HeaderGraphics}">
+
+
+            <StackPanel.Triggers>
+                <EventTrigger RoutedEvent="StackPanel.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Background.Opacity"
+                                From="1"
+                                To="0.7"
+                                Duration="0:0:4"
+                                RepeatBehavior="Forever"
+                                AutoReverse="True"
+                                
+                                ></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </StackPanel.Triggers>
+           
+            <Image Margin="20,0" Source="http://web.yesnetwork.com/images/common/Yes_reskin_blue.png" Height="30"></Image>
+
+            <StackPanel Orientation="Horizontal" x:Name="PitcherStats">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0,0,10,0"></Setter>
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Pitch speed: </TextBlock>
+                    <TextBlock Foreground="Orange">98 MPH</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Pitches:</TextBlock>
+                    <TextBlock Foreground="Orange">65</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Balls: </TextBlock>
+                    <TextBlock Foreground="Orange">24</TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Strikes: </TextBlock>
+                    <TextBlock Foreground="Orange">41</TextBlock>
+                </StackPanel>
+            </StackPanel>
+            
+        </StackPanel>
+        
+        
+        
+
+
+        <!--Current Player info or promotion, at bat outcome + lineups and other widgets on the side-->
+        <StackPanel>
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Rectangle Fill="Black" Width="250" Height="250">
+                    </Rectangle>
+                    <TextBlock FontSize="120" FontFamily="Verdana" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" Text="{Binding CurrentAtBat.CurrentPlayerNumber}"></TextBlock>
+                </Grid>
+                <StackPanel Grid.Column="1" Name="EventBoard">
+                    <StackPanel.Background>
+                        <SolidColorBrush x:Name="EventBgBrush" Color="Black"></SolidColorBrush>
+                    </StackPanel.Background>
+                    <StackPanel.Triggers>
+                        <EventTrigger RoutedEvent="StackPanel.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation 
+            Storyboard.TargetName="EventBgBrush"
+            Storyboard.TargetProperty="Color"
+            From="Black" To="DarkBlue" Duration="0:0:8"
+            AutoReverse="True" RepeatBehavior="Forever" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </StackPanel.Triggers>
+                    <TextBlock x:Name="Event" FontSize="48" Text="{Binding HomeTeam.Name}">
+                        
+                        <TextBlock.Foreground>
+                            <SolidColorBrush x:Name="EventBrush" Color="White"></SolidColorBrush>
+                        </TextBlock.Foreground>
+                      
+                        <TextBlock.Triggers>
+                            <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation 
+            Storyboard.TargetName="EventBrush"
+            Storyboard.TargetProperty="Color"
+            From="White" To="Red" Duration="0:0:2"
+            AutoReverse="True" RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                                
+
+                            </EventTrigger>
+                        </TextBlock.Triggers>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <teamcontrols:LineupListView Lineup="{Binding AwayTeam.Lineup}">
+                        <teamcontrols:LineupListView.Resources>
+                            <Style TargetType="ListView">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                            </Style>
+                            <Style TargetType="ListViewItem">
+                                <Style.Setters>
+                                    <Setter Property="Background" Value="#7F0275FF"></Setter>
+                                    <Setter Property="Foreground" Value="White"></Setter>
+                                    <Setter Property="FontSize" Value="24"></Setter>
+                                </Style.Setters>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="Foreground" Value="Yellow"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            
+                              
+                            </Style>
+                            
+                            
+                            
+                        </teamcontrols:LineupListView.Resources>
+                      
+                    </teamcontrols:LineupListView>
+                    <teamcontrols:LineupListView Lineup="{Binding HomeTeam.Lineup}">
+                        <teamcontrols:LineupListView.Resources>
+                            <Style TargetType="ListView">
+                                <Setter Property="Background" Value="Transparent"></Setter>
+                            </Style>
+                            <Style TargetType="ListViewItem">
+                                <Style.Setters>
+                                    <Setter Property="Background" Value="#7F0275FF"></Setter>
+                                    <Setter Property="Foreground" Value="White"></Setter>
+                                    <Setter Property="FontSize" Value="24"></Setter>
+                                </Style.Setters>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                        <Setter Property="Foreground" Value="Yellow"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+
+                            </Style>
+
+
+
+                        </teamcontrols:LineupListView.Resources>
+
+                    </teamcontrols:LineupListView>
+
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        
+        <!--Linescore and current at bat-->
+         <StackPanel x:Name="ScoreContainer" HorizontalAlignment="Stretch" Style="{StaticResource HeaderScoreContainer}">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="20"></Setter>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel.Triggers>
+                <EventTrigger RoutedEvent="StackPanel.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Background.Opacity"
+                                From="1"
+                                To="0.7"
+                                Duration="0:0:4"
+                                RepeatBehavior="Forever"
+                                AutoReverse="True"
+                                
+                                ></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </StackPanel.Triggers>
+            <Grid>
+               
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+                    <TextBlock Margin="20,0,0,0" HorizontalAlignment="Left" MinWidth="300" VerticalAlignment="Center"  Text="Team Name"></TextBlock>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Name="HeaderRuns"></StackPanel>
+
+                    <StackPanel Style="{StaticResource ScoreSum}" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Name="HeaderSum" Margin="10,0,0,0">
+                        <TextBlock Style="{StaticResource ScoreSumRun}">R</TextBlock>
+                        <TextBlock TextAlignment="Center">H</TextBlock>
+                        <TextBlock TextAlignment="Center">E</TextBlock>
+                    </StackPanel>
+                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" Name="OffenseSum" Margin="10,0,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="MinWidth" Value="100"></Setter>
+                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                            <Setter Property="FontSize" Value="20"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock>Balls</TextBlock>
+                    <TextBlock>Strikes</TextBlock>
+                    <TextBlock>Outs</TextBlock>
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.RowSpan="2" Grid.Row="1" Grid.Column="3">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="MinWidth" Value="100"></Setter>
+                            <Setter Property="TextAlignment" Value="Center"></Setter>
+                            <Setter Property="FontSize" Value="40"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="{Binding CurrentAtBat.Balls}"></TextBlock>
+                    <TextBlock Text="{Binding CurrentAtBat.Strikes}"></TextBlock>
+                    <TextBlock Text="{Binding CurrentAtBat.Outs}"></TextBlock>
+
+                </StackPanel>
+                
+                <!--Away Team-->
+                <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" MinWidth="300" Orientation="Horizontal">
+                        <!--<Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding AwayTeam.LogoURL}"></Image>-->
+                        <TextBlock Margin="20,0,0,0" VerticalAlignment="Center" Text="{Binding AwayTeam.Name}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Name="AwayTeamRuns" VerticalAlignment="Center" />
+
+                    <StackPanel Style="{StaticResource ScoreSum}" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="2" Orientation="Horizontal" Name="AwayTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource ScoreSumRun}" Text="{Binding AwayTeam.TotalRuns}"  ToolTip="Runs are automatically calculated. You can't enter number of runs manually." />
+                        <TextBlock Text="{Binding AwayTeam.Hits.Value}" />
+                        <TextBlock Text="{Binding AwayTeam.Errors.Value}" />
+                    </StackPanel>
+                <!--Home Team-->
+                    <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" MinWidth="300" Orientation="Horizontal">
+                        <!--<Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding HomeTeam.LogoURL}"></Image>-->
+                        <TextBlock Margin="20,0,0,0" VerticalAlignment="Center" Text="{Binding HomeTeam.Name}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Name="HomeTeamRuns" VerticalAlignment="Center" />
+
+                    <StackPanel Style="{StaticResource ScoreSum}" Grid.Row="2" HorizontalAlignment="Center" Grid.Column="2" Orientation="Horizontal" Name="HomeTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Style="{StaticResource ScoreSumRun}" Text="{Binding HomeTeam.TotalRuns}" ToolTip="Runs are automatically calculated. You can't enter number of runs manually." />
+                        <TextBlock Text="{Binding HomeTeam.Hits.Value}" />
+                        <TextBlock Text="{Binding HomeTeam.Errors.Value}" />
+                    </StackPanel>
+
+            </Grid>
+       
+            </StackPanel>
+        </StackPanel>
+</Window>

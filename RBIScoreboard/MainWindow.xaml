@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RBIScoreboard"
+        xmlns:atbatcontrols="clr-namespace:RBIScoreboard.Controls.AtBat"
+        xmlns:teamcontrols="clr-namespace:RBIScoreboard.Controls.Team"
     mc:Ignorable="d"
         Title="RBI Scoreboard" Height="600" Width="800">
 
@@ -39,6 +41,14 @@
                     <MenuItem.Header>
                         _Tools
                     </MenuItem.Header>
+                    <MenuItem Click="RunOutput_Click">
+                        <MenuItem.InputGestureText>
+                            F12
+                        </MenuItem.InputGestureText>
+                        <MenuItem.Header>
+                            _Run Output Window
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
         </StackPanel>
@@ -50,45 +60,81 @@
                 <ColumnDefinition Width="15" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+
                 <StackPanel>
-                    <StackPanel x:Name="Header" Orientation="Horizontal">
-                        <TextBlock Width="190" VerticalAlignment="Center" Text="Team Name"></TextBlock>
-                        <StackPanel Orientation="Horizontal" Name="HeaderRuns"></StackPanel>
-                        <StackPanel Orientation="Horizontal" Name="HeaderSum" Margin="10,0,0,0">
-                            <TextBlock TextAlignment="Center" Width="30">R</TextBlock>
-                            <TextBlock TextAlignment="Center" Width="30">H</TextBlock>
-                            <TextBlock TextAlignment="Center" Width="30">E</TextBlock>
+                    <StackPanel>
+                        <StackPanel x:Name="Header" Orientation="Horizontal">
+                            <TextBlock Width="190" VerticalAlignment="Center" Text="Team Name"></TextBlock>
+                            <StackPanel Orientation="Horizontal" Name="HeaderRuns"></StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="HeaderSum" Margin="10,0,0,0">
+                                <TextBlock TextAlignment="Center" Width="30">R</TextBlock>
+                                <TextBlock TextAlignment="Center" Width="30">H</TextBlock>
+                                <TextBlock TextAlignment="Center" Width="30">E</TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <!--Away Team-->
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Width="190" Orientation="Horizontal">
+                                <Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding AwayTeam.LogoURL}"></Image>
+                                <TextBlock Margin="20,0,0,0" Width="148" VerticalAlignment="Center" Text="{Binding AwayTeam.Name}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="AwayTeamRuns" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Name="AwayTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding AwayTeam.TotalRuns}"  ToolTip="Runs are automatically calculated. You can't enter number of runs manually." TextAlignment="Center" Width="30" />
+                                <TextBox Text="{Binding AwayTeam.Hits.Value}" HorizontalContentAlignment="Center" Width="30" />
+                                <TextBox Text="{Binding AwayTeam.Errors.Value}" HorizontalContentAlignment="Center" Width="30" />
+                            </StackPanel>
+                        </StackPanel>
+                        <!--Home Team-->
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Width="190" Orientation="Horizontal">
+                                <Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding HomeTeam.LogoURL}"></Image>
+                                <TextBlock Margin="20,0,0,0" Width="148" VerticalAlignment="Center" Text="{Binding HomeTeam.Name}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="HomeTeamRuns" VerticalAlignment="Center" />
+                            <StackPanel Orientation="Horizontal" Name="HomeTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding HomeTeam.TotalRuns}" ToolTip="Runs are automatically calculated. You can't enter number of runs manually." TextAlignment="Center" Width="30" />
+                                <TextBox Text="{Binding HomeTeam.Hits.Value}" HorizontalContentAlignment="Center" Width="30" />
+                                <TextBox Text="{Binding HomeTeam.Errors.Value}" HorizontalContentAlignment="Center" Width="30" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
-                    <!--Away Team-->
+
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel Width="190" Orientation="Horizontal">
-                            <Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding AwayTeam.LogoURL}"></Image>
-                            <TextBlock Margin="20,0,0,0" Width="148" VerticalAlignment="Center" Text="{Binding AwayTeam.Name}"></TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Name="AwayTeamRuns" VerticalAlignment="Center" />
-                        <StackPanel Orientation="Horizontal" Name="AwayTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding AwayTeam.TotalRuns}"  ToolTip="Runs are automatically calculated. You can't enter number of runs manually." TextAlignment="Center" Width="30" />
-                            <TextBox Text="{Binding AwayTeam.Hits.Value}" HorizontalContentAlignment="Center" Width="30" />
-                            <TextBox Text="{Binding AwayTeam.Errors.Value}" HorizontalContentAlignment="Center" Width="30" />
-                        </StackPanel>
-                    </StackPanel>
-                    <!--Home Team-->
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Width="190" Orientation="Horizontal">
-                            <Image RenderOptions.BitmapScalingMode="Fant" Width="32" Source="{Binding HomeTeam.LogoURL}"></Image>
-                            <TextBlock Margin="20,0,0,0" Width="148" VerticalAlignment="Center" Text="{Binding HomeTeam.Name}"></TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Name="HomeTeamRuns" VerticalAlignment="Center" />
-                        <StackPanel Orientation="Horizontal" Name="HomeTeamSum" Margin="10,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding HomeTeam.TotalRuns}" ToolTip="Runs are automatically calculated. You can't enter number of runs manually." TextAlignment="Center" Width="30" />
-                            <TextBox Text="{Binding HomeTeam.Hits.Value}" HorizontalContentAlignment="Center" Width="30" />
-                            <TextBox Text="{Binding HomeTeam.Errors.Value}" HorizontalContentAlignment="Center" Width="30" />
-                        </StackPanel>
+                        <StackPanel.Resources>
+                            
+                       
+                        </StackPanel.Resources>
+                        <atbatcontrols:AtBat Margin="0,100,0,0" DataContext="{Binding}"></atbatcontrols:AtBat>
+                        <teamcontrols:LineupListView Lineup="{Binding HomeTeam.Lineup}" x:Name="HomeTeamLineupListView" DataContext="{Binding}">
+                          
+                        </teamcontrols:LineupListView>
+                        <teamcontrols:LineupListView Lineup="{Binding AwayTeam.Lineup}" x:Name="AwayTeamLineupListView" DataContext="{Binding}"></teamcontrols:LineupListView>
+
                     </StackPanel>
                 </StackPanel>
+
+                <StackPanel Margin="20,0,0,0">
+                    <TextBlock FontSize="20">Inning</TextBlock>
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <TextBlock xml:space="preserve" Text="Inning: "></TextBlock>
+                        <TextBox Text="{Binding Inning.Number}"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" xml:space="preserve" Text="Part: "></TextBlock>
+                        <ComboBox Name="InningPart" SelectionChanged="InningPart_SelectionChanged">
+                            <ComboBoxItem>Top</ComboBoxItem>
+                            <ComboBoxItem>Bottom</ComboBoxItem>
+                            
+                        </ComboBox>
+                    </StackPanel>
+                    
+                </StackPanel>
+
             </StackPanel>
+            
+            
         </Grid>
 
             <StatusBar VerticalAlignment="Bottom" Height="25">

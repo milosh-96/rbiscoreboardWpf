@@ -26,7 +26,9 @@ namespace RBIScoreboard
         public MainWindow()
         {
             InitializeComponent();
-            Draw();
+            //OutputWindow outputWindow = new OutputWindow(mainViewModel);
+            //outputWindow.Show();
+            mainViewModel.Draw(HeaderRuns,AwayTeamRuns,HomeTeamRuns,true);
             this.DataContext = mainViewModel;
 
           
@@ -35,36 +37,7 @@ namespace RBIScoreboard
 
         
 
-        private void Draw()
-        {
-            for(int i = 0;i < 9;i++)
-            {
-                HeaderRuns.Children.Add(
-                    new TextBlock() { TextAlignment=TextAlignment.Center, Width = 30, Text = (i + 1).ToString() }
-                );
-            }
-
-            foreach(Stat run in mainViewModel.AwayTeam.LinescoreRuns)
-            {
-                AddElement(AwayTeamRuns, run);
-            }
-
-            foreach (Stat run in mainViewModel.HomeTeam.LinescoreRuns)
-            {
-                AddElement(HomeTeamRuns, run);
-            }
-
-        }
-
-        private void AddElement(StackPanel stackPanel,Stat run)
-        {
-            var element = new TextBox() { Width = 30, HorizontalContentAlignment = HorizontalAlignment.Center };
-            Binding binding = new Binding("Value");
-            binding.Source = run;
-
-            element.SetBinding(TextBox.TextProperty, binding);
-            stackPanel.Children.Add(element);
-        }
+       
 
         private void EditTeam_Click(object sender, RoutedEventArgs e)
         {
@@ -82,6 +55,21 @@ namespace RBIScoreboard
             }
 
             editTeam.ShowDialog();
+        }
+
+        private void InningPart_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+
+            string selectedItem = (string) ((ComboBoxItem) comboBox.SelectedItem).Content;
+            this.mainViewModel.Inning.Part = selectedItem;
+        }
+
+        private void RunOutput_Click(object sender, RoutedEventArgs e)
+        {
+            OutputWindow outputWindow = new OutputWindow( mainViewModel);
+            this.mainViewModel.OutputWindow = outputWindow;
+            outputWindow.Show();
         }
     }
 }

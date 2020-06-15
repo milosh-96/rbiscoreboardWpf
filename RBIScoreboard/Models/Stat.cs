@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RBIScoreboard.Models
 {
-    class Stat : Abstractions.A_INotifyPropertyChanged
+    public class Stat : Abstractions.A_INotifyPropertyChanged
     {
         private int scoreValue;
 

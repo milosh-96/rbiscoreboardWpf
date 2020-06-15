@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RBIScoreboard.Resources">
+
+
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"></Setter>
+    </Style>
+    <Style TargetType="StackPanel" x:Key="OutputWindowContainer">
+        <Setter Property="Background" Value="LightGray">
+            
+        </Setter>
+    </Style>
+
+    <Style x:Key="HeaderGraphics" TargetType="StackPanel">
+        <Setter Property="Background" Value="Black"></Setter>
+        <Style.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="White">
+                  </Setter>
+                <Setter Property="FontSize" Value="24"></Setter>
+                <Setter Property="Padding" Value="2,10"></Setter>
+            </Style>
+
+          
+
+        </Style.Resources>
+
+
+       
+    </Style>
+
+
+    <Style x:Key="ScoreSum" TargetType="StackPanel">
+        <Style.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="TextAlignment" Value="Center"></Setter>
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="FontSize" Value="24"></Setter>
+                <Setter Property="Foreground" Value="White"></Setter>
+            </Style>
+            
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ScoreSumRun">
+        <Setter Property="Foreground" Value="Yellow"></Setter>
+        <Setter Property="Width" Value="30"></Setter>
+        <Setter Property="FontSize" Value="24"></Setter>
+    </Style>
+
+    <Style x:Key="HeaderScoreContainer" TargetType="StackPanel">
+        <Setter Property="Background" Value="DarkBlue"></Setter>
+        <Style.Resources>
+            <Style TargetType="StackPanel">
+                <Style.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White"></Setter>
+                        <Setter Property="FontSize" Value="24"></Setter>
+                    </Style>
+                </Style.Resources>
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

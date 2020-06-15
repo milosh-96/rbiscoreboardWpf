@@ -10,7 +10,16 @@ namespace RBIScoreboard.Models
 {
     public class Player : Abstractions.A_INotifyPropertyChanged
     {
-        
+
+        public Uri PortraitPicture { get; set; } = new Uri("https://randomuser.me/api/portraits/men/14.jpg");
+
+        private int number;
+
+        public int Number
+        {
+            get { return number; }
+            set { number = value; }
+        }
 
 
         private string name = "";
@@ -29,7 +38,24 @@ namespace RBIScoreboard.Models
             set { age = value;OnPropertyChanged(); }
         }
 
+        private string position;
 
-      
+        public string Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        private bool isSelected = false;
+
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set { isSelected = value;OnPropertyChanged(); }
+        }
+
+
+
+
     }
 }
